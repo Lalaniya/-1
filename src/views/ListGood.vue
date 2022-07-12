@@ -3,7 +3,10 @@
     <div class="list" v-for="items in arrTitle" :key="items">
         <TitleNav ref="_DOM">{{items}}</TitleNav>
         <template v-for="item in arrList" :key="item.Id" >
-           <GoodList v-if="item.type_two===items" :item="item"></GoodList>
+           <GoodList 
+           v-if="item.type_two===items" :item="item"
+           @click="goDetail(item.Id)"
+           ></GoodList>
         </template>
     </div>
     <ul class="side">
@@ -19,18 +22,19 @@
 <script setup>
 import GoodList from '@/components/GoodList.vue'
 import TitleNav from '@/components/TitleNav.vue'
-import { useRoute } from 'vue-router'
+import { useRoute , useRouter} from 'vue-router'
 import http from '@/util/http'
 import { onBeforeMount, ref } from 'vue'
 import { set } from 'lodash'
 const route = useRoute()
+const router = useRouter()
 let arrList = ref([])
 let arrTitle = ref([])
 let index = ref(0)
 const _DOM = ref(null)
 onBeforeMount( () => {
     http({
-        url:'http://127.0.0.1:9527/api/goodList?type_one='+route.params.name,
+        url:'/goodList?type_one='+route.params.name,
     }).then( res => {
        if (res.status === 200) {
         let arr = []
@@ -55,6 +59,14 @@ window.onscroll = () => {
            index.value=i
         }
     });
+}
+const goDetail = (id) => {
+    router.push({
+        name: 'detail',
+        params:{
+            id
+        }
+    })
 }
 </script>
 

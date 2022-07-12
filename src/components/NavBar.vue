@@ -2,7 +2,9 @@
   <header>
     <nav>
         <div class="nav-top">
-            <img src="http://static2.biyao.com/pc/common/img/master/logo.png" alt="">
+            <img 
+            @click="router.push('/home')"
+            src="http://static2.biyao.com/pc/common/img/master/logo.png" alt="">
             <div>
                 <p class="sea">
                     <input type="text" id="search"
@@ -13,7 +15,9 @@
                 </p>
                 <p class="re">
                     <template v-for="(item,i) in resou" :key="item.Id">
-                       <span v-if="i<10">{{item.type_one}}</span>
+                       <span v-if="i<10"
+                       @click="reci(item.type_one)"
+                       >{{item.type_one}}</span>
                     </template>
                 </p>
             </div>
@@ -27,6 +31,8 @@
 import DaoHang from './NavBar/DaoHang'
 import { useStore } from 'vuex'
 import { computed, onBeforeMount, ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const store = useStore()
 // 热搜获取
 onBeforeMount( ()=> {
@@ -43,10 +49,25 @@ const resou = computed( ()=> {
     
 })
 // 搜索获取
-let value = ref('')
+let value = ref(undefined)
 const goSearch = () => {
-    console.log(value.value);
+    router.push({
+        name: 'search',
+        params:{
+            text:value.value
+        }
+    })
+    value.value=''
 }
+// 热词搜索
+const reci = (text)=>{
+    router.push({
+        name: 'search',
+        params:{
+            text,
+        }
+    })
+}   
 </script>
 
 <style lang="scss" scoped>
@@ -59,6 +80,7 @@ header{
         width: 1080px;
         height: 145px;
         margin: 0 auto;
+        cursor: pointer;
         .nav-top{
             height: 100px;
             width: 1080px;

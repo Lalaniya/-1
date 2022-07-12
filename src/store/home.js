@@ -4,7 +4,8 @@ const state = () => {
   return {
     ClassList: [],
     SearchRe: [],
-    HomeList: []
+    HomeList: [],
+    token:localStorage.getItem('token'),
   }
 }
 const actions = {
@@ -42,7 +43,12 @@ const mutations = {
   //  首页详情列表  
   GETLISTHOME(state, val) {
     state.HomeList = [...state.HomeList,...val]
-  }
+  },
+  // 添加token
+  SETTOKEN(state, val) {
+    state.token=val
+  },
+  // 
 }
 const getters = {}
 const home = {
